@@ -1,0 +1,48 @@
+(개요)
+
+1공장, 2공장, 3공장... 이 있다
+
+1공장에서 객체를 만들어 납품을 하고 있었는데
+
+1공장의 라인에 사고가 발생해서 다른 공장에서 납품을 받아야한다
+
+추상화를 통해 매개변수만 다른 공장으로 입력해서 받을 수 있도록 코드 작성
+
+->
+
+(의사코드)
+
+abstract class 공장
+        public abstract void 공통기능1
+        public abstract void 공통기능2
+        ...
+
+class 공장1 extends 공장
+        공통기능1 오버라이딩
+        공통기능2 오버라이딩
+        ...
+
+class 공장2 extends 공장
+        공통기능1 오버라이딩
+        공통기능2 오버라이딩
+        ...
+
+class 공장3...
+
+class 공장선별
+        public getFactory(String fac)
+                    입력된 매개변수 st = 1이면 return 공장1
+                    입력된 매개변수 st = 2이면 return 공장2
+                    그 외면 유효하지 않음을 나타내는 예외 처리 // return null;
+
+
+public class AbstractCast
+       public static void main(String[] args)
+                   공장선별 fac 객체 생성
+                   공장 객체 = fac.getFactory(스캐너 입력받은 공장);
+
+                   공통기능1 실행
+                   공통기능2 실행
+                   ...
+
+
