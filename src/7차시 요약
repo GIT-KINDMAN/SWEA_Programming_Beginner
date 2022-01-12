@@ -1,0 +1,169 @@
+인터페이스: 추상 클래스보다 추상성이 더욱 심화된 개념. 멤버 변수는 모두 상수형으로, 메서드는 모두 추상 메서드로 선언되어야 함
+
+사용하는 이유: 상속(inheritance)처럼 is a ~ 가 성립하지 않는 집합에도 적용하기 위함 + 다중상속을 받고 싶은 경우
+
+다중상속 e.g) 카메라 클래스로부터 상속 + 프린터라는 인터페이스 사용
+가능한 이유) 인터페이스는 변수를 가질 수 없는 특수한 클래스이기 때문
+
+구문
+public interface 인터페이스명 [extends 부모인터페이스명, ...] {
+	// 상수 		-> final 예약어를 이용해서 멤버 변수 선언
+	// 추상 메서드	-> 인터페이스는 객체를 생성할 수 없으므로, 상수는 static 예약어를 붙여서 선언해야 함
+}
+-> Q: 인터페이스 이름으로 직접 해당 상수를 사용하게 하기 위해서는?
+    A: 반드시 static 예약어를 final 예약어와 함께 사용하여야 함
+
+하지만! 어차피 항상 static final 변수이고 항상 abstract 메서드이기 때문에, static final 및 abstract는 생략이 가능하다.
+
+ㅡ
+
+public interface Drawable {
+	public int PLAIN_PEN = 1;
+	public int BOLD_PEN = 2;
+	public int ITALIC_PEN = 3;
+	public void draw();
+	public void move(int x, int y);
+}
+-> static final, abstract 속성을 갖고 있음. 작성 시 생략된 것 뿐이다.
+
+추상 클래스와 마찬가지로 직접 객체화되지 못하므로, 자식 클래스를 통해 객체 생성이 된다.
+extends 대신 implements(구현)
+-> 인터페이스를 상속하는 클래스는 인터페이스에 정의된 추상 메서드들을 Overriding 해야 함.
+
+!!
+인터페이스에 등록된 추상 메서드를 하나라도 Overrding 하지 않으면?
+-> 추상 메서드가 상속되어 해당 클래스는 abstract 예약어가 붙은 추상 클래스로 선언됨
+
+ㅡ
+
+형식
+
+interface Drawable {
+	상수 // 예제에서는 보통선, 굵은선, 기울인 선 등등의 멤버 변수 선언
+	추상 메소드 // (draw, move 메소드 등 공통적인 '기능' 메소드. 모양이 아니라 기능)
+}
+
+//초기화
+class Shape {
+	int x = 0;
+	int y = 0;
+
+	Shape(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+}
+
+// Circle 클래스 정의
+class Circle extends Shape implements Drawable {
+	int radius;
+
+	Circle(int x, int y, int radius) {
+		super(x, y);
+		this.radius = radius;
+	}
+	@overriding
+	draw()
+
+	@overriding
+	move()
+
+}
+
+// Rectangle 클래스 정의
+class Rectangle extends Shape implements Drawable {
+	int width;
+	int height;
+
+	Rectangle(int x, int y, int width, int height) {
+		super(x, y);
+		this.width = width;
+		this.height = height;
+	}
+	@overriding
+	draw()
+
+	@overriding
+	move()
+}
+
+
+public class 메인클래스
+	public static void main(String args[])
+
+	Drawable d = new Circle(10, 10, 100);
+	d.draw();
+	d.move(5, 5);
+
+	d = new Rectangle(20, 20, 50, 50);
+	d.draw();
+	d.move(5, 10);
+
+ㅡ
+
+인터페이스는 클래스와 동일하게 묵시적 형변환과 명시적 형변환이 가능함
+
+e.g)
+Shape s = new Circle(); // 클래스 묵시적 형변환
+Drawable d = new Circle(); // 인터페이스 묵시적 형변환
++
+인터페이스 유형의 객체 참조 변수는 인터페이스에 선언된 요소에만 접근 가능함
+-> 무슨 뜻이냐 하면, Drawable 인터페이스가 가지고 있는 상수와 메서드에만 접근이 가능하고, 인터페이스를 구현한 객체의 요소에 접근하는 것은 허용되지 않는다는 뜻.
+
+ㅡ
+
+골때리는건, 인터페이스 선언 시 얘가 또 다른 인터페이스를 상속해서 정의할 수가 있다!
+
+예를 들어, public interface [인터페이스명] extends [부모인터페이스1, 부모인터페이스2...] {} 이런 식으로 말이다.
+
+인터페이스도 클래스들 처럼 상속 관계에 따라 계층 구조를 가질 수 있음.
+
+클래스는 단일 상속이지만, 인터페이스 끼리는 다중 상속 가능하다.
+!! 상위 인터페이스가  가지고 있는 메서드까지 모두 구현해야한다!! 안할거면 추상 메서드 형식으로라도 구현해야 함 !!
+
+-> 3개 인터페이스가 계층 구조를 이루고 있는 예
+
+interface Paintable {
+	public void paint();
+}
+
+interface Drawable {
+	상수
+	추상 메서드
+}
+
+interface Printable extends Paintable, Drawable {
+	public void print();
+}
+
+이후 class Circle implements Printable 클래스가 Drawable, Paintable, Printable의 모든 메서드를 구현함
+
+
+ㅡㅡㅡ
+
+java API 패키지
+
+주로 쓰는 것 {
+java.io:    자바 입출력 기능과 관련된 패키지. 파일이나 버퍼 등의 입출력 기능을 제공함
+java.lang: 자바 언어의 기초적인 사항을 정의한 클래스와 관련된 패키지. Object 클래스, 문자열 관련, 시스템 관련, 멀티스레드 관련 등 기본적인 기능을 포함
+java.net: 자바의 네트워크와 관련된 패키지. 소켓과 관련된 기능 제공
+java.util: 유틸리티성 기능과 관련된 패키지. 날짜 표현이나 여러 자료형을 하나로 취급하는 컬렉션과 관련된 기능을 제공
+}
+
+특이사항?
+java.lang 패키지는 별도의 import 문을 사용하지 않음
+
+import 문을 사용하여 JVM(자바 가상 머신) 실행 시 클래스를 찾게 되는 과정은
+: 클래스가 저장된 폴더 -> 클래스패스를 설정한 폴더 -> import한 클래스
+
+-> 기본적으로 다른 패키지 대 패키지인데, import를 통해 미리 준비된 패키지를 가져와서 해당 패키지 내의 함수를 쓰는것
+e.g) import java.util.Date;
+아니면 java.util.Date date = new java.util.Date();로 쓰던가.
+
+다른 패키지더라도 동일한 이름의 클래스는 중복 import 불가
+-> 해결: 사용빈도가 높은 클래스는 import 시켜 사용하고,
+           사용빈도가 낮은 클래스는 패키지 경로를 포함하여 사용할 것
+
+ㅡㅡㅡ
+
+
