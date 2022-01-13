@@ -166,5 +166,13 @@ e.g) import java.util.Date;
 
 ㅡㅡㅡ
 
+package 선언(경로) -> class -> 메소드 구현
+---> 이것으로 커스텀 라이브러리 생성 가능
 
-yet
+만들고 난후 import해서 쓰면 그냥 쓸 수 있음
+
+JAR = JAVA Archive
+
+Export를 거쳐 (.classpath나 .project 등 체크해제하는 설정 거치고, 적절하게 manifast 설정) jar 파일 생성해서 프로젝트 내에서 활용
+
+ㅡㅡㅡ
