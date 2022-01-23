@@ -1,0 +1,39 @@
+java.lang.Throwable
+->
+(java.lang.Error, java.lang.Exception)
+->
+java.lang.Exception
+[ java.lang.ClassNotFoundException (이하 전부 예외 처리 로직 구현해야함)
+[ java.lang.CloneNotSupportedException
+[ java.lang.InstantiationException
+[ java.io.IOException
++
+[ java.lang.RuntimeException (컴파일 단계에서 처리, 예외 처리 로직 없어도 됨)
+[[ java.lang.IllegalArgumentException
+[[ java.lang.ArithmeticException
+[[ java.lang.ArrayIndexOutOfBoundsException
+
+
+IllegalArgumentException 예외: 메서드의 매개변수 유형을 잘못 사용하면 ㅂ
+IOException 예외: 입출력 시에 지정한 파일이 시스템에 존재하지 않으면 발생하는 오류
+
+자바의 예외 처리 방법
+1. 예외가 발생한 메서드 내에서 직접 처리하는 방식 (try-catch, 다중 catch, 상속을 이용한 예외 처리, finally 블록)
+2. 해당 메서드를 호출한 곳으로 예외 처리를 넘기는 방식 (throws 예약어)
+
+1-1. 구조
+try {
+	예외 발생 가능성이 있는 소스 코드;
+} catch(예외 타입 매개변수명) {
+	예외타입의 예외가 발생할 경우 수행 될 소스 코드;
+}
+// catch 블록의 매개변수는 예외 객체가 발생했을 때 참조하는 변수명으로, 반드시 java.lang.Throwable 클래스의 하위 클래스 타입으로 선언되어야 함.
+(순서: 지정한 타입의 예외 객체 발생 -> try 블록의 나머지 문장들은 수행되지 않음 -> 자바 가상 머신(JVM)은 발생한 예외 객체를 발생시킴 -> 발생한 예외 객체 타입에 해당하는 catch 블록을 수행함)
+-> 예를들어 catch(ArithmeticException e) { sout: nope! }
+--> 그냥 catch(Exception e) {} 도 가능. 하지만 어떤 예외가 발생했는지 모르게 되고 예외 별 처리는 불가능
+---> catch 구문은 여러개 가능. catch구문 쓰면 해당 예외들로는 강제 종료 안당함
+----> 다중 catch + catch(Exception e) 구성이 안정적. 마지막은 switch문의 default처럼 쓰자
+-----> finally 블록은 필수는 아니니 알아서. 얘는 예외 발생 유무나 catch 유무와 상관없이 '무조건 수행된다'. 그러므로 DB 연동 로직, 파일 IO 로직을 수행한 후에 '반드시 수행 되어야 할 로직이 있는 경우에 사용'. 일부러 break; 안쓰는 것과 비슷한가?
+
+2-1. 구조
+~ ThrowsTest.java & CustomExceptionTest.java
