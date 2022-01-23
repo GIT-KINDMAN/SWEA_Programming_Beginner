@@ -77,5 +77,6 @@ public class Abstract_Factory {
         factory.input();
         factory.output();
 
+        sc.close();
     }
 }
